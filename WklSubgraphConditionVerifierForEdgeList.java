@@ -483,7 +483,7 @@ public class WklSubgraphConditionVerifierForEdgeList {
                     BCC2of[BCCvertex] = i;
                 } else {
                     // Vertex is shared by at least 3 biconnected components
-                    System.out.println("All W_k,l subgraph conditions are violated because vertex " + BCCvertex + " has criticality at least 3");
+                    System.out.println("The W_k,k subgraph condition is violated because vertex " + BCCvertex + " has criticality at least 3");
                     return true;
                 }
             }
