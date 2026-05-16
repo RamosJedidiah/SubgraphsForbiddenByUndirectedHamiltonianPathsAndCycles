@@ -514,17 +514,19 @@ public class WklSubgraphConditionVerifierForAdjacencyLists {
         // Ensure 3 subgraphs do not share medal vertices and lanyard vertices
         for (i = 0; i < 3; i++) {
             for (j = 0; j < n; j++) {
-                if (WklChecklist[j]) {
-                    if (bottlenecksOf[i][j] == -3) {
+                if (bottlenecksOf[i][j] == -3) {
+                    if (WklChecklist[j]) {
                         System.out.println("Medal vertex " + j + " is shared by the W_1,1 subgraphs");
                         return false;
                     }
-                    if (bottlenecksOf[i][j] >= 0) {
+                    WklChecklist[j] = true;
+                } else if (bottlenecksOf[i][j] >= 0) {
+                    if (WklChecklist[j]) {
                         System.out.println("Lanyard vertex " + j + " is shared by the W_1,1 subgraphs");
                         return false;
                     }
+                    WklChecklist[j] = true;
                 }
-                WklChecklist[j] = true;
             }
         }
         System.out.println("3 W_1,1 subgraphs found");
