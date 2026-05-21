@@ -532,7 +532,7 @@ public class WklSubgraphConditionVerifierForEdgeList {
         // Verify 3 subgraphs
         int[][] bottlenecksOf = new int[][]{bottlenecks1of, bottlenecks2of, bottlenecks3of};
         int[][] medalsOf = new int[][]{medals1of, medals2of, medals3of};
-        int i, j;
+        int i, j, v;
         for (i = 0; i < 3; i++) {
             if (!isWklSubgraph(n, edgeList, edgeCount, 1, 1, bottlenecksOf[i], medalsOf[i])) {
                 System.out.println(i + "th subgraph is not a W_1,1 subgraph");
@@ -540,21 +540,17 @@ public class WklSubgraphConditionVerifierForEdgeList {
             }
         }
         // Ensure 3 subgraphs do not share medal vertices and lanyard vertices
-        boolean[] WklChecklist = new boolean[n];
-        for (i = 0; i < 3; i++) {
-            for (j = 0; j < n; j++) {
-                if (bottlenecksOf[i][j] == -3) {
-                    if (WklChecklist[j]) {
-                        System.out.println("Medal vertex " + j + " is shared by the W_1,1 subgraphs");
-                        return false;
+        for (v = 0; v < n; v++) {
+            for (i = 0; i < 3; i++) {
+                if (bottlenecksOf[i][v] == -3 || bottlenecksOf[i][v] >= 0) {
+                    // v is a medal vertex or lanyard vertex in the ith subgraph
+                    for (j = 0; j < 3; j++) {
+                        if (i != j && bottlenecksOf[j][v] != -1) {
+                            // v is in the jth subgraph not necessarily as a medal vertex or lanyard vertex
+                            System.out.println(i + "th subgraph has a medal vertex or lanyard vertex " + v + " that is in the " + j + "th subgraph");
+                            return false;
+                        }
                     }
-                    WklChecklist[j] = true;
-                } else if (bottlenecksOf[i][j] >= 0) {
-                    if (WklChecklist[j]) {
-                        System.out.println("Lanyard vertex " + j + " is shared by the W_1,1 subgraphs");
-                        return false;
-                    }
-                    WklChecklist[j] = true;
                 }
             }
         }
